@@ -597,10 +597,14 @@ Evaluá especialmente: estructura para mercado angloparlante, uso de logros con 
 
     try {
       const raw = await callClaude(prompt);
-      const clean = raw.replace(/```json|```/g, '').trim();
       let parsed;
-      try { parsed = JSON.parse(clean); }
-      catch(pe) { throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.'); }
+      try {
+        const match = raw.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('no json found');
+        parsed = JSON.parse(match[0]);
+      } catch(pe) {
+        throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.');
+      }
       renderAnalisis(parsed);
     } catch(e) {
       document.getElementById('loading-analisis').classList.remove('visible');
@@ -712,12 +716,14 @@ Enfocate especialmente en: palabras clave de la oferta que faltan en el CV, cóm
 
     try {
       const raw = await callClaude(prompt);
-let parsed;
-try {
-  const match = raw.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('no json found');
-  parsed = JSON.parse(match[0]);
-      catch(pe) { throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.'); }
+      let parsed;
+      try {
+        const match = raw.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('no json found');
+        parsed = JSON.parse(match[0]);
+      } catch(pe) {
+        throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.');
+      }
       renderAdaptar(parsed);
     } catch(e) {
       document.getElementById('loading-adaptar').classList.remove('visible');
