@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "CV Optimizer por @aletrabajaonline",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
