@@ -575,7 +575,7 @@ FORMATO RAC: Resultado + Acción + Contexto. Ejemplo correcto: "Gestioné la age
 CV:
 ${cv}
 
-Respondé SOLO en JSON con esta estructura exacta, sin markdown ni texto extra:
+Respondé ÚNICAMENTE con el objeto JSON, sin ningún texto antes ni después, sin bloques de código, sin explicaciones:
 {
   "score": número del 1 al 100,
   "resumen": "Una oración que describe el estado actual del CV",
@@ -696,7 +696,7 @@ ${cv}
 OFERTA DE TRABAJO (Job Description):
 ${jd}
 
-Respondé SOLO en JSON con esta estructura exacta, sin markdown ni texto extra:
+Respondé ÚNICAMENTE con el objeto JSON, sin ningún texto antes ni después, sin bloques de código, sin explicaciones:
 {
   "match_score": número del 1 al 100 que indica qué tan compatible es el perfil con la oferta,
   "resumen_match": "Una oración resumiendo la compatibilidad",
@@ -712,9 +712,11 @@ Enfocate especialmente en: palabras clave de la oferta que faltan en el CV, cóm
 
     try {
       const raw = await callClaude(prompt);
-      const clean = raw.replace(/```json|```/g, '').trim();
-      let parsed;
-      try { parsed = JSON.parse(clean); }
+let parsed;
+try {
+  const match = raw.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error('no json found');
+  parsed = JSON.parse(match[0]);
       catch(pe) { throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.'); }
       renderAdaptar(parsed);
     } catch(e) {
