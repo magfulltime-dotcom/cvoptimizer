@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 1000,
+        max_tokens: 2000,
         system: systemPrompt,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -33,8 +33,7 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    console.log('API response:', data.content[0].text);
-return res.status(200).json({ text: data.content[0].text });
+    return res.status(200).json({ text: data.content[0].text });
 
   } catch (e) {
     return res.status(500).json({ error: e.message });
