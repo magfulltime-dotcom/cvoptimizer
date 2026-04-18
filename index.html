@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CV Optimizer — por aletrabajaonline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --orange: #E8652A;
+    --green: #2D5A3D;
+    --black: #111111;
+    --cream: #FAF8F4;
+    --light: #F2EDE6;
+    --gray: #888;
+    --border: #E0D9D0;
+    --white: #ffffff;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--black);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+    font-style: italic;
+  }
+
+  .logo span {
+    color: var(--orange);
+    font-style: normal;
+  }
+
+  .badge {
+    background: var(--orange);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--black);
+    padding: 32px 24px 40px;
+    color: white;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 em {
+    color: var(--orange);
+    font-style: italic;
+  }
+
+  .hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    max-width: 340px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--light);
+    margin: 24px 24px 0;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .tab.active {
+    background: var(--white);
+    color: var(--black);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  /* PANELS */
+  .panel { display: none; padding: 24px; }
+  .panel.active { display: block; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* INPUTS */
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--black);
+  }
+
+  textarea, input[type="text"], select {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--cream);
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+    margin-bottom: 16px;
+  }
+
+  textarea:focus, input:focus, select:focus {
+    border-color: var(--orange);
+  }
+
+  textarea { min-height: 140px; }
+
+  /* ROLE SELECT */
+  .role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .chip {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--black);
+    transition: all 0.2s;
+  }
+
+  .chip.selected {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+
+  /* BUTTON */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:hover { background: #d4571f; }
+  .btn:disabled { background: var(--border); color: var(--gray); cursor: not-allowed; }
+
+  .btn-secondary {
+    background: var(--black);
+  }
+  .btn-secondary:hover { background: #333; }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 32px 0;
+  }
+
+  .loading.visible { display: block; }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--orange);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading p {
+    font-size: 14px;
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  /* RESULTS */
+  .results { display: none; }
+  .results.visible { display: block; }
+
+  .score-card {
+    background: var(--black);
+    color: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .score-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .score-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 16px;
+  }
+
+  .score-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: var(--orange);
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .result-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .result-section h4 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-section h4.red { color: #E03333; }
+  .result-section h4.orange { color: var(--orange); }
+  .result-section h4.green { color: var(--green); }
+
+  .result-item {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    color: #333;
+  }
+
+  .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .result-item strong {
+    color: var(--black);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 13px;
+  }
+
+  /* OPTIMIZED CV */
+  .optimized-box {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: var(--black);
+    margin-bottom: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: #FFF8F5;
+    border: 1.5px solid #FFD5C0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #8B4513;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .info-box .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* RESET */
+  .reset-btn {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--gray);
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  /* FOOTER */
+  .footer-brand {
+    text-align: center;
+    padding: 32px 24px 0;
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .footer-brand a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CV<span>optimizer</span></div>
+  <div class="badge">Beta</div>
+</header>
+
+<div class="hero">
+  <h1>Tu CV merece<br>más <em>respuestas</em></h1>
+  <p>Analizá tu CV y adaptalo a cada oferta para el mercado remoto internacional.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('analisis')">📋 Analizar CV</button>
+  <button class="tab" onclick="switchTab('adaptar')">🎯 Adaptar a oferta</button>
+</div>
+
+<!-- PANEL 1: ANÁLISIS -->
+<div id="panel-analisis" class="panel active">
+
+  <div id="form-analisis">
+    <div class="info-box">
+      <span class="icon">💡</span>
+      <span>Pegá el texto completo de tu CV. Cuanto más detallado, mejor el análisis.</span>
+    </div>
+
+    <div class="section-label">Tu CV</div>
+
+    <label>¿A qué rol estás apuntando?</label>
+    <div class="role-chips" id="role-chips">
+      <div class="chip" onclick="toggleChip(this)">Customer Support</div>
+      <div class="chip" onclick="toggleChip(this)">Virtual Assistant</div>
+      <div class="chip" onclick="toggleChip(this)">Sales / SDR</div>
+      <div class="chip" onclick="toggleChip(this)">Marketing</div>
+      <div class="chip" onclick="toggleChip(this)">Content Manager</div>
+      <div class="chip" onclick="toggleChip(this)">Project Manager</div>
+      <div class="chip" onclick="toggleChip(this)">Operations</div>
+    </div>
+
+    <label>Pegá tu CV acá</label>
+    <textarea id="cv-input" placeholder="Nombre completo&#10;Email | LinkedIn&#10;&#10;EXPERIENCIA&#10;Empresa — Cargo (2020-2024)&#10;- Responsabilidad 1&#10;- Responsabilidad 2&#10;&#10;EDUCACIÓN&#10;..."></textarea>
+
+    <button class="btn" onclick="analizarCV()">
+      <span>Analizar mi CV</span> <span>→</span>
+    </button>
+  </div>
+
+  <div class="loading" id="loading-analisis">
+    <div class="spinner"></div>
+    <p>Analizando tu CV para el mercado remoto...</p>
+  </div>
+
+  <div class="results" id="results-analisis"></div>
+
+</div>
+
+<!-- PANEL 2: ADAPTAR -->
+<div id="panel-adaptar" class="panel">
+
+  <div id="form-adaptar">
+    <div class="info-box">
+      <span class="icon">🎯</span>
+      <span>Pegá tu CV y la descripción de la oferta. La app te dice exactamente cómo ajustarlo para esa posición.</span>
+    </div>
+
+    <div class="section-label">Tu CV</div>
+    <label>CV actual</label>
+    <textarea id="cv-adaptar" placeholder="Pegá tu CV acá..."></textarea>
+
+    <div class="section-label">La oferta</div>
+    <label>Descripción de la oferta (Job Description)</label>
+    <textarea id="jd-input" placeholder="Pegá el texto completo de la oferta de trabajo acá...&#10;&#10;About the role...&#10;Responsibilities...&#10;Requirements..."></textarea>
+
+    <button class="btn btn-secondary" onclick="adaptarCV()">
+      <span>Adaptar mi CV a esta oferta</span> <span>→</span>
+    </button>
+  </div>
+
+  <div class="loading" id="loading-adaptar">
+    <div class="spinner"></div>
+    <p>Adaptando tu CV a esta oferta específica...</p>
+  </div>
+
+  <div class="results" id="results-adaptar"></div>
+
+</div>
+
+<div class="footer-brand">
+  Creado por <a href="https://instagram.com/aletrabajaonline" target="_blank">@aletrabajaonline</a>
+</div>
+
+<script>
+  let selectedRole = '';
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'analisis') || (i === 1 && tab === 'adaptar'));
+    });
+    document.getElementById('panel-analisis').classList.toggle('active', tab === 'analisis');
+    document.getElementById('panel-adaptar').classList.toggle('active', tab === 'adaptar');
+  }
+
+  function toggleChip(el) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedRole = el.textContent;
+  }
+
+  async function callClaude(prompt) {
+    const systemPrompt = `Sos una experta en trabajo remoto para LATAM, especialmente para el mercado angloparlante (EE.UU., Canadá, UK). Tenés 5+ años de experiencia trabajando para empresas de EE.UU. desde Argentina. Sabés exactamente qué buscan los recruiters internacionales en CVs de candidatos de LATAM. Respondés siempre en español rioplatense, de forma directa y práctica. Sin vueltas, sin motivacional vacío — solo feedback concreto y accionable.
+
+TU METODOLOGÍA DE CV (basada en la guía de @aletrabajaonline):
+
+ESTRUCTURA CORRECTA DE UN CV PARA EL MERCADO REMOTO INTERNACIONAL:
+1. Encabezado: nombre completo, email profesional (Gmail), teléfono con código de país, ciudad y país, LinkedIn. SIN foto, DNI, fecha de nacimiento ni dirección completa.
+2. Resumen Profesional: 2-3 líneas con la fórmula: [Rol] con [X años] de experiencia en [área]. Especializado/a en [habilidad clave]. Busco una posición remota donde pueda [propuesta de valor concreta].
+3. Experiencia Laboral: del más reciente al más antiguo, usando formato RAC — Resultado, Acción, Contexto. NUNCA listar tareas, siempre logros con impacto. Si trabajó remoto, aclararlo.
+4. Educación: título, institución, año. Sin listar materias. Si tiene menos de 3 años de experiencia, puede ir antes de Experiencia.
+5. Herramientas Digitales y Trabajo Remoto: sección CLAVE para mercado internacional. Listar herramientas reales (Notion, Trello, Slack, Google Workspace, Zoom, Canva, HubSpot, Salesforce, ChatGPT) y disponibilidad horaria con huso horario.
+6. Certificaciones, Habilidades e Intereses: específico, no genérico. "Excel avanzado (tablas dinámicas)" > "Microsoft Office".
+
+ERRORES CRÍTICOS A DETECTAR:
+- Foto en el CV (mercado anglosajón NO usa foto)
+- DNI o fecha de nacimiento incluidos
+- Listar responsabilidades en vez de logros con impacto (formato RAC)
+- No tener sección de Herramientas Digitales
+- Resumen genérico o ausente
+- No aclarar disponibilidad horaria para trabajo remoto
+- Columnas, tablas o cuadros de texto (rompen compatibilidad ATS)
+- Email no profesional (hotmail, yahoo, etc.)
+- Habilidades genéricas sin especificar nivel
+
+COMPATIBILIDAD ATS: Los sistemas ATS no pueden leer columnas, tablas, cuadros de texto ni imágenes.
+
+FORMATO RAC: Resultado + Acción + Contexto. Ejemplo correcto: "Gestioné la agenda de un equipo de 5 personas, reduciendo el tiempo de coordinación semanal mediante flujos en Notion."`;
+
+    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, systemPrompt })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (!data.text) throw new Error('Respuesta vacía del servidor');
+    return data.text;
+  }
+
+  async function analizarCV() {
+    const cv = document.getElementById('cv-input').value.trim();
+    if (!cv) { alert('Pegá tu CV antes de continuar.'); return; }
+
+    document.getElementById('form-analisis').style.display = 'none';
+    document.getElementById('loading-analisis').classList.add('visible');
+
+    const prompt = `Analizá este CV para el mercado de trabajo remoto internacional (empresas de EE.UU./exterior), especialmente para el rol de ${selectedRole || 'trabajo remoto en general'}.
+
+CV:
+${cv}
+
+Respondé SOLO en JSON con esta estructura exacta, sin markdown ni texto extra:
+{
+  "score": número del 1 al 100,
+  "resumen": "Una oración que describe el estado actual del CV",
+  "errores_criticos": [
+    {"titulo": "...", "descripcion": "..."},
+    {"titulo": "...", "descripcion": "..."}
+  ],
+  "mejoras_importantes": [
+    {"titulo": "...", "descripcion": "..."},
+    {"titulo": "...", "descripcion": "..."}
+  ],
+  "puntos_fuertes": [
+    {"titulo": "...", "descripcion": "..."}
+  ],
+  "proximos_pasos": ["paso 1", "paso 2", "paso 3"]
+}
+
+Evaluá especialmente: estructura para mercado angloparlante, uso de logros con métricas vs solo responsabilidades, claridad del perfil objetivo, palabras clave del rol, adaptación cultural al mercado internacional.`;
+
+    try {
+      const raw = await callClaude(prompt);
+      const clean = raw.replace(/```json|```/g, '').trim();
+      let parsed;
+      try { parsed = JSON.parse(clean); }
+      catch(pe) { throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.'); }
+      renderAnalisis(parsed);
+    } catch(e) {
+      document.getElementById('loading-analisis').classList.remove('visible');
+      document.getElementById('form-analisis').style.display = 'block';
+      const errBox = document.createElement('div');
+      errBox.style.cssText = 'background:#FFF0F0;border:1.5px solid #FFB0B0;border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:#CC0000;';
+      errBox.textContent = '⚠️ ' + (e.message || 'Error desconocido') + '. Intentá de nuevo.';
+      const form = document.getElementById('form-analisis');
+      form.insertBefore(errBox, form.firstChild);
+      setTimeout(() => errBox.remove(), 6000);
+    }
+  }
+
+  function renderAnalisis(data) {
+    document.getElementById('loading-analisis').classList.remove('visible');
+
+    const score = data.score || 0;
+    const scoreColor = score >= 70 ? '#2D5A3D' : score >= 45 ? '#E8652A' : '#E03333';
+
+    let html = `
+      <div class="score-card">
+        <div class="score-number" style="color:${scoreColor}">${score}</div>
+        <div class="score-label">/ 100 — ${data.resumen}</div>
+        <div class="score-bar"><div class="score-fill" style="width:${score}%"></div></div>
+      </div>
+    `;
+
+    if (data.errores_criticos?.length) {
+      html += `<div class="result-section">
+        <h4 class="red">🚨 Errores críticos</h4>
+        ${data.errores_criticos.map(e => `
+          <div class="result-item">
+            <strong>${e.titulo}</strong>${e.descripcion}
+          </div>`).join('')}
+      </div>`;
+    }
+
+    if (data.mejoras_importantes?.length) {
+      html += `<div class="result-section">
+        <h4 class="orange">⚡ Mejoras importantes</h4>
+        ${data.mejoras_importantes.map(e => `
+          <div class="result-item">
+            <strong>${e.titulo}</strong>${e.descripcion}
+          </div>`).join('')}
+      </div>`;
+    }
+
+    if (data.puntos_fuertes?.length) {
+      html += `<div class="result-section">
+        <h4 class="green">✅ Puntos fuertes</h4>
+        ${data.puntos_fuertes.map(e => `
+          <div class="result-item">
+            <strong>${e.titulo}</strong>${e.descripcion}
+          </div>`).join('')}
+      </div>`;
+    }
+
+    if (data.proximos_pasos?.length) {
+      html += `<div class="result-section">
+        <h4>📋 Próximos pasos</h4>
+        ${data.proximos_pasos.map((p, i) => `
+          <div class="result-item">
+            <strong>${i+1}.</strong> ${p}
+          </div>`).join('')}
+      </div>`;
+    }
+
+    html += `<button class="reset-btn" onclick="resetAnalisis()">← Analizar otro CV</button>`;
+
+    const results = document.getElementById('results-analisis');
+    results.innerHTML = html;
+    results.classList.add('visible');
+
+    setTimeout(() => {
+      const fill = results.querySelector('.score-fill');
+      if (fill) fill.style.width = score + '%';
+    }, 100);
+  }
+
+  async function adaptarCV() {
+    const cv = document.getElementById('cv-adaptar').value.trim();
+    const jd = document.getElementById('jd-input').value.trim();
+    if (!cv || !jd) { alert('Pegá tu CV y la descripción de la oferta antes de continuar.'); return; }
+
+    document.getElementById('form-adaptar').style.display = 'none';
+    document.getElementById('loading-adaptar').classList.add('visible');
+
+    const prompt = `Tenés que ayudar a adaptar un CV para una oferta específica del mercado remoto internacional.
+
+CV ACTUAL:
+${cv}
+
+OFERTA DE TRABAJO (Job Description):
+${jd}
+
+Respondé SOLO en JSON con esta estructura exacta, sin markdown ni texto extra:
+{
+  "match_score": número del 1 al 100 que indica qué tan compatible es el perfil con la oferta,
+  "resumen_match": "Una oración resumiendo la compatibilidad",
+  "keywords_faltantes": ["keyword1", "keyword2", "keyword3"],
+  "cambios_sugeridos": [
+    {"seccion": "nombre de la sección del CV", "original": "texto actual o vacío si es para agregar", "sugerido": "texto mejorado", "razon": "por qué hacer este cambio"}
+  ],
+  "frase_perfil_sugerida": "Un párrafo de perfil profesional optimizado para esta oferta específica (en inglés)",
+  "consejo_final": "Un consejo concreto sobre si aplicar o no, y cómo hacerlo"
+}
+
+Enfocate especialmente en: palabras clave de la oferta que faltan en el CV, cómo reformular experiencias para que coincidan con lo que buscan, si el perfil es compatible o no con la oferta.`;
+
+    try {
+      const raw = await callClaude(prompt);
+      const clean = raw.replace(/```json|```/g, '').trim();
+      let parsed;
+      try { parsed = JSON.parse(clean); }
+      catch(pe) { throw new Error('La IA no devolvió JSON válido. Intentá de nuevo.'); }
+      renderAdaptar(parsed);
+    } catch(e) {
+      document.getElementById('loading-adaptar').classList.remove('visible');
+      document.getElementById('form-adaptar').style.display = 'block';
+      const errBox = document.createElement('div');
+      errBox.style.cssText = 'background:#FFF0F0;border:1.5px solid #FFB0B0;border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:#CC0000;';
+      errBox.textContent = '⚠️ ' + (e.message || 'Error desconocido') + '. Intentá de nuevo.';
+      const form = document.getElementById('form-adaptar');
+      form.insertBefore(errBox, form.firstChild);
+      setTimeout(() => errBox.remove(), 6000);
+    }
+  }
+
+  function renderAdaptar(data) {
+    document.getElementById('loading-adaptar').classList.remove('visible');
+
+    const score = data.match_score || 0;
+    const scoreColor = score >= 70 ? '#2D5A3D' : score >= 45 ? '#E8652A' : '#E03333';
+
+    let html = `
+      <div class="score-card">
+        <div class="score-number" style="color:${scoreColor}">${score}%</div>
+        <div class="score-label">compatibilidad — ${data.resumen_match}</div>
+        <div class="score-bar"><div class="score-fill" style="width:${score}%"></div></div>
+      </div>
+    `;
+
+    if (data.keywords_faltantes?.length) {
+      html += `<div class="result-section">
+        <h4 class="red">🔑 Keywords que faltan en tu CV</h4>
+        <div class="result-item">
+          ${data.keywords_faltantes.map(k => `<span style="display:inline-block;background:#FFF0E8;color:var(--orange);border:1px solid #FFD5C0;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:500;margin:3px;">${k}</span>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    if (data.cambios_sugeridos?.length) {
+      html += `<div class="result-section">
+        <h4 class="orange">✏️ Cambios sugeridos</h4>
+        ${data.cambios_sugeridos.map(c => `
+          <div class="result-item">
+            <strong>${c.seccion}</strong>
+            ${c.original ? `<div style="font-size:12px;color:#999;margin-bottom:4px;font-style:italic;">Actual: "${c.original}"</div>` : ''}
+            <div style="font-size:13px;color:var(--green);margin-bottom:4px;">→ ${c.sugerido}</div>
+            <div style="font-size:12px;color:#888;">${c.razon}</div>
+          </div>`).join('')}
+      </div>`;
+    }
+
+    if (data.frase_perfil_sugerida) {
+      html += `<div class="result-section">
+        <h4 class="green">💼 Párrafo de perfil sugerido (en inglés)</h4>
+        <div class="result-item" style="font-style:italic;color:#333;">${data.frase_perfil_sugerida}</div>
+      </div>`;
+    }
+
+    if (data.consejo_final) {
+      html += `<div class="result-section" style="background:#F0F7F3;border-color:#B8D9C5;">
+        <h4 class="green">🧭 Consejo final</h4>
+        <div class="result-item">${data.consejo_final}</div>
+      </div>`;
+    }
+
+    html += `<button class="reset-btn" onclick="resetAdaptar()">← Probar con otra oferta</button>`;
+
+    const results = document.getElementById('results-adaptar');
+    results.innerHTML = html;
+    results.classList.add('visible');
+  }
+
+  function resetAnalisis() {
+    document.getElementById('results-analisis').classList.remove('visible');
+    document.getElementById('results-analisis').innerHTML = '';
+    document.getElementById('form-analisis').style.display = 'block';
+    document.getElementById('cv-input').value = '';
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    selectedRole = '';
+  }
+
+  function resetAdaptar() {
+    document.getElementById('results-adaptar').classList.remove('visible');
+    document.getElementById('results-adaptar').innerHTML = '';
+    document.getElementById('form-adaptar').style.display = 'block';
+    document.getElementById('cv-input').value = '';
+    document.getElementById('jd-input').value = '';
+  }
+</script>
+</body>
+</html>
