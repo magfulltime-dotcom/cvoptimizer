@@ -351,8 +351,9 @@ Respondé ÚNICAMENTE con JSON sin texto antes ni después:
     try {
       const raw = await callBackend(prompt, 'analisis');
       const m = raw.match(/{[\s\S]*}/);
-      if (!m) throw new Error('JSON no encontrado');
-      renderAnalisis(JSON.parse(m[0]));
+if (!m) throw new Error('JSON no encontrado');
+const clean = m[0].replace(/[\u0000-\u001F\u007F-\u009F]/g,' ').replace(/,\s*}/g,'}').replace(/,\s*]/g,']');
+renderAnalisis(JSON.parse(clean));
     } catch(e) {
       document.getElementById('loading-analisis').classList.remove('visible');
       if (e.type === 'freemium') { showPaywall('analisis'); }
@@ -377,8 +378,9 @@ Respondé ÚNICAMENTE con JSON sin texto antes ni después:
     try {
       const raw = await callBackend(prompt, 'adaptar');
       const m = raw.match(/{[\s\S]*}/);
-      if (!m) throw new Error('JSON no encontrado');
-      renderAdaptar(JSON.parse(m[0]));
+if (!m) throw new Error('JSON no encontrado');
+const clean = m[0].replace(/[\u0000-\u001F\u007F-\u009F]/g,' ').replace(/,\s*}/g,'}').replace(/,\s*]/g,']');
+renderAdaptar(JSON.parse(clean));
     } catch(e) {
       document.getElementById('loading-adaptar').classList.remove('visible');
       if (e.type === 'freemium') { showPaywall('adaptar'); }
