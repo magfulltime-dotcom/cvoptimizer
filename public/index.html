@@ -346,8 +346,8 @@ METODOLOGÍA CV (@aletrabajaonline):
 CV:
 ${cv}
 
-Respondé ÚNICAMENTE con JSON sin texto antes ni después:
-{"score":50,"resumen":"texto","errores_criticos":[{"titulo":"t","descripcion":"d"}],"mejoras_importantes":[{"titulo":"t","descripcion":"d"}],"puntos_fuertes":[{"titulo":"t","descripcion":"d"}],"proximos_pasos":["p1","p2","p3"]}`;
+Respondé ÚNICAMENTE con JSON sin texto antes ni después. Cada string máximo 15 palabras. Sin comillas dobles dentro de los valores:
+{"match_score":50,"resumen_match":"max 10 palabras","keywords_faltantes":["k1","k2","k3"],"cambios_sugeridos":[{"seccion":"nombre","sugerido":"texto corto","razon":"max 10 palabras"}],"frase_perfil_sugerida":"one sentence in english","consejo_final":"max 15 palabras"}`;
     try {
       const raw = await callBackend(prompt, 'analisis');
       const m = raw.match(/{[\s\S]*}/);
@@ -373,8 +373,8 @@ CV: ${cv}
 
 OFERTA: ${jd}
 
-Respondé ÚNICAMENTE con JSON sin texto antes ni después:
-{"match_score":50,"resumen_match":"texto","keywords_faltantes":["k1","k2"],"cambios_sugeridos":[{"seccion":"s","original":"o","sugerido":"s","razon":"r"}],"frase_perfil_sugerida":"texto en inglés","consejo_final":"texto"}`;
+Respondé ÚNICAMENTE con JSON sin texto antes ni después. Cada string máximo 15 palabras. Sin comillas dobles dentro de los valores:
+{"score":50,"resumen":"max 10 palabras","errores_criticos":[{"titulo":"corto","descripcion":"max 15 palabras"}],"mejoras_importantes":[{"titulo":"corto","descripcion":"max 15 palabras"}],"puntos_fuertes":[{"titulo":"corto","descripcion":"max 15 palabras"}],"proximos_pasos":["max 10 palabras","max 10 palabras","max 10 palabras"]}`;
     try {
       const raw = await callBackend(prompt, 'adaptar');
       const m = raw.match(/{[\s\S]*}/);
