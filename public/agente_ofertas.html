@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agente de Ofertas — @aletrabajaonline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root {
+    --orange:#E8652A; --green:#2D5A3D; --black:#111;
+    --cream:#FAF8F4; --light:#F2EDE6; --gray:#888;
+    --border:#E0D9D0; --white:#fff; --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black);min-height:100vh;padding-bottom:40px;}
+  header{background:var(--black);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--white);font-style:italic;}
+  .logo span{color:var(--orange);font-style:normal;}
+  .badge{background:var(--orange);color:white;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;}
+  .hero{background:var(--black);padding:24px 24px 32px;color:white;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:26px;line-height:1.2;margin-bottom:8px;}
+  .hero h1 em{color:var(--orange);font-style:italic;}
+  .hero p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;}
+  .body{padding:20px 24px;}
+  .card{background:var(--white);border-radius:var(--radius);padding:20px;margin-bottom:16px;border:1px solid var(--border);}
+  .card h3{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:12px;}
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+  input,textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--cream);color:var(--black);outline:none;transition:border-color .2s;margin-bottom:14px;}
+  input:focus,textarea:focus{border-color:var(--orange);}
+  textarea{min-height:80px;resize:vertical;}
+  .btn{width:100%;padding:14px;background:var(--orange);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn:hover{background:#d4571f;}
+  .btn:disabled{background:var(--border);color:var(--gray);cursor:not-allowed;}
+  .btn-green{background:var(--green);}
+  .btn-green:hover{background:#234a32;}
+  .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--gray);margin-top:8px;}
+  .btn-outline:hover{border-color:var(--black);color:var(--black);background:transparent;}
+  .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .status-bar{background:var(--light);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--gray);margin-bottom:14px;display:none;align-items:center;gap:10px;border:1px solid var(--border);}
+  .status-bar.visible{display:flex;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 1s ease-in-out infinite;flex-shrink:0;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .status-dot.done{background:var(--green);animation:none;}
+  .status-dot.error{background:#E03333;animation:none;}
+  .offer-list{display:none;}
+  .offer-list.visible{display:block;}
+  .offer-item{background:var(--white);border-radius:var(--radius);padding:16px;margin-bottom:10px;border:1px solid var(--border);position:relative;}
+  .offer-item.uploading{opacity:.6;}
+  .offer-item.done{border-color:#B8D9C5;background:#F0F7F3;}
+  .offer-item.error{border-color:#FFB0B0;background:#FFF0F0;}
+  .offer-num{font-size:10px;font-weight:700;color:var(--orange);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+  .offer-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.3;}
+  .offer-meta{font-size:12px;color:var(--gray);line-height:1.7;}
+  .offer-meta strong{color:var(--black);}
+  .offer-status{font-size:11px;font-weight:600;margin-top:8px;}
+  .offer-status.ok{color:var(--green);}
+  .offer-status.err{color:#E03333;}
+  .summary{background:var(--black);color:white;border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center;}
+  .summary-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--orange);line-height:1;}
+  .summary-label{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px;}
+  .info-box{background:#FFF8F5;border:1.5px solid #FFD5C0;border-radius:10px;padding:12px 14px;font-size:12px;color:#8B4513;line-height:1.6;margin-bottom:14px;display:flex;gap:8px;}
+  .footer{text-align:center;padding:24px;font-size:12px;color:var(--gray);}
+  .footer a{color:var(--orange);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">agente<span>ofertas</span></div>
+  <div class="badge">por @aletrabajaonline</div>
+</header>
+
+<div class="hero">
+  <h1>Ofertas remotas<br><em>listas para subir</em></h1>
+  <p>Busca, califica y sube las 15 mejores ofertas de la semana a tu Notion.</p>
+</div>
+
+<div class="body">
+
+  <!-- CONFIG -->
+  <div class="card" id="config-card">
+    <h3>Configuración</h3>
+
+    <label>Notion Database ID</label>
+    <input type="text" id="notion-db" placeholder="ID de tu base de datos" value="eef5a00f11b44272b54c966e2be04997">
+    <label>Contexto adicional (opcional)</label>
+    <textarea id="extra-context" placeholder="Ej: esta semana priorizá roles de marketing con inglés no requerido..."></textarea>
+    <button class="btn" id="btn-search" onclick="buscarOfertas()">
+      🔍 Buscar y subir ofertas a Notion
+    </button>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-bar" id="status-bar">
+    <div class="status-dot" id="status-dot"></div>
+    <span id="status-text">Iniciando búsqueda...</span>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="offer-list" id="offer-list"></div>
+
+</div>
+
+<div class="footer">Creado por <a href="https://instagram.com/aletrabajaonline">@aletrabajaonline</a></div>
+
+<script>
+const NOTION_PROXY = 'https://api.allorigins.win/raw?url=';
+
+function setStatus(text, type='loading') {
+  const bar = document.getElementById('status-bar');
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+  bar.classList.add('visible');
+  txt.textContent = text;
+  dot.className = 'status-dot' + (type === 'done' ? ' done' : type === 'error' ? ' error' : '');
+}
+
+async function callClaude(systemPrompt, userPrompt) {
+  const res = await fetch('/api/agent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ systemPrompt, userPrompt })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Error del servidor');
+  }
+  const data = await res.json();
+  return data.text;
+}
+
+async function addToNotion(dbId, oferta) {
+  const res = await fetch('/api/notion-add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ dbId, oferta })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Error al subir a Notion');
+  }
+  return await res.json();
+}
+
+async function buscarOfertas() {
+  const dbId = document.getElementById('notion-db').value.trim();
+  const extraContext = document.getElementById('extra-context').value.trim();
+
+  if (!dbId) {
+    alert('Completá el ID de Notion.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-search');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Buscando ofertas...';
+
+  const offerList = document.getElementById('offer-list');
+  offerList.innerHTML = '';
+  offerList.classList.remove('visible');
+
+  try {
+    // Step 1: Search for jobs
+    setStatus('Buscando ofertas en LinkedIn y web...');
+
+    const systemPrompt = `Sos una experta en trabajo remoto para LATAM con 5+ años trabajando para empresas de EE.UU. desde Argentina. Tu trabajo es buscar y curar ofertas de trabajo remoto para una audiencia argentina de perfiles no técnicos (admin, atención al cliente, marketing, ventas, operaciones).
+
+CRITERIOS DE SELECCIÓN:
+- Trabajo 100% remoto (no híbrido)
+- Apto para perfiles de LATAM/Argentina
+- Roles: Customer Support, Virtual Assistant, Admin, Sales/SDR, Marketing, Content, Operations, Project Manager
+- Preferir empresas que ya contrataron talento LATAM antes
+- Incluir mezcla de entry level y con algo de experiencia
+- Incluir algunas que NO requieran inglés fluido
+
+FORMATO DE RESPUESTA: Respondé ÚNICAMENTE con un array JSON válido. Sin texto antes ni después.`;
+
+    const today = new Date().toLocaleDateString('es-AR');
+    const userPrompt = `Buscá 15 ofertas de trabajo remoto publicadas esta semana (semana del ${today}) en LinkedIn y otras fuentes para perfiles de LATAM sin experiencia remota previa.
+
+${extraContext ? `Contexto adicional: ${extraContext}` : ''}
+
+Para cada oferta respondé con este formato JSON exacto:
+[
+  {
+    "titulo": "Rol (Empresa) — Remoto",
+    "entry": "Sí / No / Probable",
+    "ingles": "No requerido / Básico / Intermedio / Avanzado",
+    "para_quien": "descripción breve del perfil ideal en una línea",
+    "link": "https://linkedin.com/jobs/... o URL real de la oferta",
+    "categoria": "Customer Support | Virtual Assistant | Sales | Marketing | Operations"
+  }
+]
+
+Buscá ofertas REALES publicadas esta semana. Usá tu conocimiento de empresas que contratan LATAM y generá links plausibles de LinkedIn jobs. Las 15 deben cubrir las 5 categorías.`;
+
+    const raw = await callClaude(systemPrompt, userPrompt);
+
+    // Parse JSON
+    const match = raw.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('No se encontraron ofertas en formato válido.');
+    
+    let ofertas;
+    try {
+      ofertas = JSON.parse(match[0]);
+    } catch(e) {
+      throw new Error('Error al procesar las ofertas. Intentá de nuevo.');
+    }
+
+    if (!Array.isArray(ofertas) || ofertas.length === 0) {
+      throw new Error('No se encontraron ofertas.');
+    }
+
+    // Show offers
+    setStatus(`Encontré ${ofertas.length} ofertas. Subiendo a Notion...`);
+    offerList.classList.add('visible');
+
+    // Summary card
+    offerList.innerHTML = `
+      <div class="summary">
+        <div class="summary-num">${ofertas.length}</div>
+        <div class="summary-label">ofertas encontradas esta semana</div>
+      </div>`;
+
+    // Render all offers first
+    ofertas.forEach((o, i) => {
+      const div = document.createElement('div');
+      div.className = 'offer-item';
+      div.id = `offer-${i}`;
+      div.innerHTML = `
+        <div class="offer-num">${String(i+1).padStart(2,'0')} · ${o.categoria || ''}</div>
+        <div class="offer-title">${o.titulo}</div>
+        <div class="offer-meta">
+          <strong>Entry:</strong> ${o.entry}<br>
+          <strong>Inglés:</strong> ${o.ingles}<br>
+          <strong>Para quién:</strong> ${o.para_quien}
+        </div>
+        <div class="offer-status" id="status-${i}">⏳ Subiendo...</div>`;
+      offerList.appendChild(div);
+    });
+
+    // Upload to Notion one by one
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (let i = 0; i < ofertas.length; i++) {
+      const oferta = ofertas[i];
+      const itemEl = document.getElementById(`offer-${i}`);
+      const statusEl = document.getElementById(`status-${i}`);
+
+      setStatus(`Subiendo oferta ${i+1} de ${ofertas.length} a Notion...`);
+
+      try {
+        await addToNotion(dbId, oferta);
+        itemEl.classList.add('done');
+        statusEl.className = 'offer-status ok';
+        statusEl.textContent = '✅ Subida a Notion';
+        successCount++;
+      } catch(e) {
+        itemEl.classList.add('error');
+        statusEl.className = 'offer-status err';
+        statusEl.textContent = '❌ ' + e.message;
+        errorCount++;
+      }
+
+      // Small delay to avoid rate limits
+      await new Promise(r => setTimeout(r, 400));
+    }
+
+    // Final status
+    setStatus(
+      `Listo. ${successCount} ofertas subidas a Notion${errorCount > 0 ? `, ${errorCount} con error` : ''}.`,
+      errorCount > 0 ? 'error' : 'done'
+    );
+
+    // Add reset button
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'btn btn-outline';
+    resetBtn.textContent = '← Nueva búsqueda';
+    resetBtn.onclick = () => {
+      offerList.innerHTML = '';
+      offerList.classList.remove('visible');
+      document.getElementById('status-bar').classList.remove('visible');
+      btn.disabled = false;
+      btn.innerHTML = '🔍 Buscar y subir ofertas a Notion';
+    };
+    offerList.appendChild(resetBtn);
+
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = '🔍 Buscar y subir ofertas a Notion';
+  }
+}
+</script>
+</body>
+</html>
